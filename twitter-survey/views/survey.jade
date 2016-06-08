@@ -1,0 +1,73 @@
+doctype html
+html(ng-app="twitterSurvey")
+  // ASSIGN OUR ANGULAR MODULE
+  head
+      // META
+      meta(charset='utf-8')
+      meta(name='viewport', content='width=device-width, initial-scale=1')
+      // Optimize mobile viewport
+      title Twitter Umfrage zu Alter, Geschlecht und Interessen
+      // SCROLLS
+      link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css')
+      // load bootstrap
+      link(rel='stylesheet', href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css')
+      style.
+          html 					{ overflow-y:scroll; }
+          body 					{ padding-top:50px; }
+          #profile-list 				{ margin-bottom:30px; }
+          #profile-form 	 			{ margin-bottom:50px; }
+          // SPELLS
+      script(src='https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js')
+      script(src='//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.min.js')
+      script(src='js/core.js')
+      // load our main application
+      // load angular
+      script(src='js/controllers/main.js')
+      // load up our controller
+      script(src='js/services/profiles.js')
+      // load our profile service
+      
+
+
+  body
+      // SET THE CONTROLLER
+      .container(ng-controller="mainCtrl as vm")
+          // HEADER AND PROFILE COUNT
+          .jumbotron
+              h2 Twitter Umfrage: Alter, Geschlecht und Interessen Beginn
+              h3
+                  | Es haben schon
+                  span.label.label-info {{ profiles.length }}
+                  |  Nutzer teilgenommen
+          // FORM TO CREATE PROFILES
+          #profile-form.row
+              .col-sm-6.col-sm-offset-3
+                  form
+                      .form-group
+                          label Twitter-Name (Screen Name):
+                          input.form-control.input-lg(type='text', placeholder='Twitter Name', ng-model='formData.screen_name')
+                          br
+                          label Alter (z.B. 34):
+                          input.form-control.input-lg(type='number', placeholder='Alter (z.B. 32)', ng-model='formData.age')
+                      label Geschlecht:
+                      .radio
+                          label
+                              input#male(type='radio', name='optionsRadios', value='male', ng-model='formData.gender')
+                              | 					    Männlich
+                      .radio
+                          label
+                              input#female(type='radio', name='optionsRadios', value='female', ng-model='formData.gender')
+                              | 					    Weiblich
+                      br
+                      button.btn.btn-primary.btn-lg(type='submit', ng-click='createProfile()') Angaben absenden
+          ul(ng-repeat="profile in profiles | limitTo:-5 | orderBy:'time':true")
+            li {{profile.screen_name}} , {{profile.age}}, {{profile.gender}}
+          .text-center.text-muted
+              p
+                  | Bei Fragen können Sie sich jederzeit an
+                  a(href='mailto:twitter-research@web.de') Robin Hirt
+                  |  wenden.
+              p
+                  | Lesen Sie die
+                  a(href='#') Datenschutzbestimmungen
+                  | .
