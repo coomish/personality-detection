@@ -36,66 +36,97 @@ html(ng-app="twitterSurvey")
             .col-xs-6
               img(src='assets/kit.jpg').img-logo
             .col-xs-6
-              img(src='assets/ksri.jpg').img-logo
+              img(src='assets/ksri.jpg').img-logo.pull-right
           .jumbotron
-              h2 Wer nutzt Twitter? Eine Studie
-              h3
-                  | Diese Umfrage richtet sich an deutsche Twitternutzer und wird nicht mehr als 
-                  span.label.label-info eine Minute
-                  |  in Anspruch nehmen.
-          .panel.panel-default
-            .panel-body.text-center
-              #profile-form.row
-                  .col-sm-6.col-sm-offset-3
-                      div(ng-if='step == 1')
-                        form
-                            .form-group
-                                label Twitter-Name (Screen Name):
-                                input.form-control.input-lg(type='text', placeholder='Twitter Name', ng-model='formData.screen_name')
-                            button.btn.btn-primary.btn-lg(type='submit', ng-click='checkTwitter();stepperUp()') Account prüfen
-                                
-                      div(ng-if='step == 2 || step == 3')
-                        h2 {{twitterdata.twittername}}
-                        
-                        img(src='{{twitterdata.picture_url}}').img-thumbnail.img-responsive.center-block
-                        br
-                        button.btn.btn-primary.btn-lg(type='submit', ng-click='stepperUp()') Das bin ich
-                        button.btn.btn-danger.btn-lg(type='submit', ng-click='stepperDown()') Das bin ich nicht
-                                
-                      div(ng-if='step == 3')
-                        form
-                            .form-group
+            h2 Welche Nutzergruppen schreiben auf Twitter?
+            p
+                | Diese Umfrage hat das Ziel herauszufinden, wer im 
+                b deutschsprachigen 
+                | Raum Twitter nutzt. Hierzu bitten wir Sie zunächst Ihren persönlichen Twitter-Account anzugeben und anschließend uns Ihr Alter und Ihr Geschlecht mitzuteilen. 
+                b Ihre personenbezogenen Daten werden zu keinem Zeitpunkt veröffentlicht und nur zum Zwecke der Studie verwendet. In der nachfolgenden Datenverarbeitung werden Ihre Daten anonymisiert ausgewertet.
+            div.start(ng-if='step == 0')
+              button.btn.btn-success.btn-lg(type='submit', ng-click='stepper(1)') Los geht's!
+              p.pull-right 
+                | Dauer der Umfrage: 
+                span.label.label-info 
+                  span.glyphicon.glyphicon-time(aria-hidden='true')
+                  | < 1 Minute
+
+          form(name='userForm', novalidate='', ng-if='step > 0')
+            .panel.panel-default
+              .panel-body
+                #profile-form.row
+                    .col-sm-8.col-sm-offset-2
+                        div(ng-if='step == 1').text-center
+                          .form-group(ng-class="{ 'has-error' : userForm.name.$invalid && !userForm.name.$pristine }")
+                              label Geben Sie bitte Ihren Twitter-Namen ein:
+                              .input-group
+                                span#basic-addon1.input-group-addon.input-lg @
+                                input.form-control.input-lg(type='text', name='name', placeholder='Accountname', ng-model='formData.screen_name',ng-pattern="/^[a-zA-Z0-9_-]*$/", required='')
+                              p.help-block(ng-show='userForm.name.$invalid && !formData.name.$pristine') Bitte geben Sie einen gültigen Twitteraccountnamen an.
+                          button.btn.btn-primary.btn-lg(type='submit',ng-disabled='userForm.$invalid', ng-click='checkTwitter();stepper(2)') Account prüfen
+                              
+                        div(ng-if='step == 2 && twitterdata.exists == true').text-center
+                          h2 {{twitterdata.twittername}}
+                          h4 Twitternutzer: @ {{formData.screen_name}}
+                          img(src='{{twitterdata.picture_url}}').img-thumbnail.img-responsive.center-block
+                          p
+                            .btn-group(role='group')
+                              button.btn.btn-success.btn-lg(type='submit', ng-click='stepper(3)') Das bin ich
+                              button.btn.btn-danger.btn-lg(type='submit', ng-click='stepper(1)') Das bin ich nicht
+                        div(ng-if='step == 2 && twitterdata.exists == false')
+                          h3 Der Twitternutzer @{{formData.screen_name}} konnte leider nicht gefunden werden. Bitte prüfen Sie Ihre Eingabe.
+                          button.btn.btn-primary.btn-lg(type='submit',ng-disabled='userForm.$invalid', ng-click='stepper(1)') Neuen Accountnamen eingeben      
+                        div(ng-if='step == 3')
+                          .row
+                            .col-sm-4.pic-cont
+                              img(src='{{twitterdata.picture_url}}').img-thumbnail.img-responsive.center-block.small-img
+                            .col-sm-8
+                              br
+                              h3 {{twitterdata.twittername}}
+                              h4 Twitternutzer: @ {{formData.screen_name}}
+                          .row
+                          .col-sm-12  
+                            .form-group(ng-class="{ 'has-error' : userForm.age.$invalid && !userForm.age.$pristine }")
                               label Alter (z.B. 34):
-                              input.form-control.input-lg(type='number', placeholder='Alter (z.B. 32)', ng-model='formData.age')
-                            .form-group
+                              input.form-control.input-lg(type='number', name='age' placeholder='Alter (z.B. 32)', ng-model='formData.age', required='')
+                              p.help-block(ng-show='userForm.age.$invalid && !formData.age.$pristine') Bitte geben Sie Ihr Alter an.
+                            .form-group(ng-class="{ 'has-error' : userForm.gender.$invalid && !userForm.gender.$pristine }")
                               label Geschlecht:
                               .radio
-                                  label
-                                      input#male(type='radio', name='optionsRadios', value='male', ng-model='formData.gender')
-                                      | 					    Männlich
+                                  label.radio-inline
+                                      input#male(type='radio', name='gender', value='male', ng-model='formData.gender', ng-required='!formData.gender')
+                                      | Männlich
                               .radio
-                                  label
-                                      input#female(type='radio', name='optionsRadios', value='female', ng-model='formData.gender')
-                                      | 					    Weiblich
+                                  label.radio-inline
+                                      input#female(type='radio', name='gender', value='female', ng-model='formData.gender', ng-required='!formData.gender')
+                                      | Weiblich
                               br
-                            button.btn.btn-primary.btn-lg(type='submit', ng-click='createProfile(); stepperUp()') Angaben absenden
-                            button.btn.btn-default.btn-lg(type='submit', ng-click='stepperDown()') zurück
-                              
-              .jumbotron(ng-if='step == 4')
-                h1 Vielen Dank für Ihre Teilnahme
-                div
-                  | Wenn Sie über die Studie informiert bleiben wollen, können Sie gerne Ihre E-Mail Adresse hinterlassen und über Neuigkeiten informiert werden.
-                  label Ihre E-Mail Adresse:
-                  input.form-control.input-lg(type='text', placeholder='E-Mail Adresse', ng-model='formData.email')
-                        
-              .text-center.text-muted
-                  p
-                      | Bei Fragen können Sie sich jederzeit an
-                      a(href='mailto:twitter-research@web.de') Robin Hirt
-                      |  wenden.
-                  p
-                      | Lesen Sie die
-                      a(href='#') Datenschutzbestimmungen
-                      | .
+                              p.help-block(ng-show='userForm.gender.$invalid && !formData.gender.$pristine') Bitte geben Sie Ihr Geschlecht an.
+                            div.btn-group.text-center
+                              button.btn.btn-primary.btn-lg(type='submit', ng-click='createProfile(); stepper(4)',ng-disabled='userForm.$invalid') Angaben absenden
+                              button.btn.btn-default.btn-lg(type='submit', ng-click='stepper(2)') zurück
+                                
+                        .jumbotron(ng-if='step == 4')
+                          h3 Vielen Dank für Ihre Teilnahme
+                          p
+                            | Wenn Sie über die Studie informiert bleiben wollen, können Sie gerne Ihre E-Mail Adresse hinterlassen und über Neuigkeiten informiert werden.
+                            
+                            .form-group(ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }")
+                              label Ihre E-Mail Adresse:
+                              input.form-control(type='email', name='email').input-lg(placeholder='E-Mail Adresse', ng-model='formData.email')
+                              p.help-block(ng-show='userForm.email.$invalid && !userForm.email.$pristine') Bitte geben Sie eine gültige E-Mailadresse an.      
+                              button.btn.btn-primary.btn-lg(type='submit', ng-click='',ng-disabled='userForm.$invalid') Informiert bleiben
+                            
+          .text-center.text-muted
+              p
+                  | Bei Fragen können Sie sich jederzeit an 
+                  a(href='mailto:twitter-research@web.de')  Robin Hirt
+                  |  wenden.
+              p
+                  | Lesen Sie die 
+                  a(href='#') Datenschutzbestimmungen
+                  | .
           ul(ng-repeat="profile in profiles | limitTo:-5 | orderBy:'time':true")
             li {{profile.screen_name}} , {{profile.age}}, {{profile.gender}}
+      

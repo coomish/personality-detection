@@ -9,7 +9,7 @@
         $scope.formData = {};
         $scope.loading = true;
         $scope.profiles = [];
-        $scope.step = 1;
+        $scope.step = 0;
         // GET =====================================================================
         // when landing on the page, get all profiles and show them
         // use the service to get all the profiles
@@ -19,14 +19,12 @@
                 $scope.loading = false;
             });
         // Creating Walkthrough
-        $scope.stepperUp = function() {
-          $scope.step = $scope.step + 1;
+        $scope.stepper = function(step) {
+          $scope.step = step;
+          if ($scope.step == 1) {
+            $scope.twitterdata = {}
+          }
         };
-        $scope.stepperDown = function() {
-          $scope.step = $scope.step - 1;
-        };
-        
-
         // CREATE ==================================================================
         // when submitting the add form, send the text to the node API
         $scope.createProfile = function() {

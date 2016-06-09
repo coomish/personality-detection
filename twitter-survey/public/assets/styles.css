@@ -1,6 +1,18 @@
 .img-logo {
-  max-width: 200px;
+  max-width: 250px;
   display:block;
   height:auto;
   padding:15px;
+}
+label {
+  font-size: 1.5em ;
+}
+.small-img {
+  max-width: 150px;
+}
+.pic-cont {
+  min-width: 155px;
+}
+.start {
+  padding-top: 30px;
 }

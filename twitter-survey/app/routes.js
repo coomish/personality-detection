@@ -45,7 +45,7 @@ module.exports = function(app) {
 
 	// Define Crawler API that checks if Profile exists
 	app.get('/api/twittercheck/:screen_name', function(req, res) {
-		var json = { twittername : "", picture_url : ""};
+		var json = { twittername : "", picture_url : "", exists : ""};
 		// create a profile, information comes from AJAX request from Angular
 		url = 'https://twitter.com/' + req.params.screen_name;
 		request(url, function (error, response, html) {
@@ -60,11 +60,12 @@ module.exports = function(app) {
 					json.picture_url = data.attr('src');
 					//console.log(data.attr("src"));
 				})
-
+				json.exists = true;
 				res.send(json);
 		  }
 			else {
 				json.twittername = 'not found';
+				json.exists = false;
 				res.send(json);
 			}
 		});
