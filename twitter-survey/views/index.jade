@@ -6,7 +6,7 @@ html(ng-app="twitterSurvey")
       meta(charset='utf-8')
       meta(name='viewport', content='width=device-width, initial-scale=1')
       // Optimize mobile viewport
-      title Twitter Umfrage
+      title Umfrage zum Nutzerverhalten deutscher Twitteruser
       // SCROLLS
       link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css')
       // load bootstrap
@@ -61,7 +61,7 @@ html(ng-app="twitterSurvey")
                     | < 1 Minute
 
           form(name='userForm', novalidate='', ng-if='step > 0')
-            .panel.panel-default
+            .well
               .panel-body
                 #profile-form.row
                     .col-sm-8.col-sm-offset-2
@@ -76,7 +76,7 @@ html(ng-app="twitterSurvey")
                               
                         div(ng-if='step == 2 && formData.twitterdata.exists == true').text-center
                           h2 {{formData.twitterdata.twittername}}
-                          h4 Twitternutzer: @ {{formData.screen_name}}
+                          h4 Twitternutzer: @{{formData.screen_name}}
                           img(src='{{formData.twitterdata.picture_url}}').img-thumbnail.img-responsive.center-block
                           p
                             .btn-group(role='group')
@@ -86,7 +86,7 @@ html(ng-app="twitterSurvey")
                           h3 Der Twitternutzer @{{formData.screen_name}} konnte leider nicht gefunden werden. Bitte prüfen Sie Ihre Eingabe.
                           button.btn.btn-primary.btn-lg(type='submit',ng-disabled='userForm.$invalid', ng-click='stepper(1)') Neuen Accountnamen eingeben      
                         div(ng-if='step == 3')
-                          .row
+                          .row.pthumb
                             .col-sm-4.pic-cont
                               img(src='{{formData.twitterdata.picture_url}}').img-thumbnail.img-responsive.center-block.small-img
                             .col-sm-8
@@ -133,9 +133,16 @@ html(ng-app="twitterSurvey")
                   a(href='mailto:twitter-research@web.de')  Robin Hirt
                   |  wenden.
               p
-                  | Lesen Sie die 
-                  a(href='#') Datenschutzbestimmungen
-                  | .
+                
+                a(href='http://www.kit.edu', target='_blank') KIT - Karlsruher Institut für Technologie
+                |   - 
+                a(href='http://www.ksri.kit.edu', target='_blank') KSRI - Karlsruhe Service Research Institute
+              p
+
+                  a(href='/impressum/') Impressum
+                  |   - 
+                  a(href='/datenschutz/') Datenschutzerklärung
+                
           //- ul(ng-repeat="profile in profiles | limitTo:-5 | orderBy:'time':true")
           //-   li {{profile.screen_name}} , {{profile.age}}, {{profile.gender}}
           //- |partic

@@ -21,8 +21,8 @@
         // Creating Walkthrough
         $scope.stepper = function(step) {
           $scope.step = step;
-          if ($scope.step == 1) {
-            $scope.twitterdata = {}
+          if (step == 1) {
+            $scope.formData = {}
           }
         };
         // GET =====================================================================

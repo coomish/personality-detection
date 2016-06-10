@@ -10,6 +10,9 @@ label {
 .small-img {
   max-width: 150px;
 }
+.pthumb {
+  padding-bottom:10px;
+}
 .pic-cont {
   min-width: 155px;
 }

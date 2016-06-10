@@ -116,10 +116,13 @@ module.exports = function(app) {
 	});
 
 	// application views -------------------------------------------------------------
-	app.get('*', function(req, res) {
+	app.get('/', function(req, res) {
 		res.render('index.jade');
 	})
-	app.get('/survey', function(req, res) {
-		res.render('survey.jade');
+	app.get('/impressum/', function(req, res) {
+		res.render('impressum.jade');
+	})
+	app.get('/datenschutz', function(req, res) {
+		res.render('datenschutz.jade');
 	});
 };
