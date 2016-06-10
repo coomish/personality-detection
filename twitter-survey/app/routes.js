@@ -1,4 +1,5 @@
 var Profile = require('./models/profile');
+var Participent = require('./models/participent');
 var request = require('request');
 var cheerio = require('cheerio');
 
@@ -8,6 +9,14 @@ function getProfiles(res){
 			if (err)
 				res.send(err)
 			res.json(profiles); // return all profiles in JSON
+		});
+};
+function getParticipents(res){
+	Participent.find(function(err, participents) {
+			// if there is an error retrieving, send the error. nothing after res.send(err) will execute
+			if (err)
+				res.send(err)
+			res.json(participents); // return all profiles in JSON
 		});
 };
 // ------
@@ -20,19 +29,42 @@ module.exports = function(app) {
 
 	// get all profiles
 	app.get('/api/profiles', function(req, res) {
-		console.log('123');
+		//console.log('123');
 		// db access
 		getProfiles(res);
 	});
+	// get all participents
+	app.get('/api/participents', function(req, res) {
+		//console.log('123');
+		// db access
+		getParticipents(res);
+	});
 
-	// create profile and send back all profiles after creation
-	app.post('/api/profiles', function(req, res) {
+	// create participent and send back all participents after creation
+	app.post('/api/participents', function(req, res) {
 		console.log(req);
+		// create a profile, information comes from AJAX request from Angular
+		Participent.create({
+			screen_name : req.body.screen_name,
+			email: req.body.email,
+			twitterid: req.body.gender
+		}, function(err, participent) {
+			if (err)
+				res.send(err);
+
+			// get and return all the participents after you create another
+			getParticipents(res);
+		});
+
+	});
+	app.post('/api/profiles', function(req, res) {
 		// create a profile, information comes from AJAX request from Angular
 		Profile.create({
 			screen_name : req.body.screen_name,
 			age: req.body.age,
-			gender: req.body.gender
+			gender: req.body.gender,
+			picture_url: req.body.twitterdata.picture_url,
+			twittername: req.body.twitterdata.twittername
 		}, function(err, profile) {
 			if (err)
 				res.send(err);
@@ -84,7 +116,7 @@ module.exports = function(app) {
 	});
 
 	// application views -------------------------------------------------------------
-	app.get('/home/', function(req, res) {
+	app.get('*', function(req, res) {
 		res.render('index.jade');
 	})
 	app.get('/survey', function(req, res) {

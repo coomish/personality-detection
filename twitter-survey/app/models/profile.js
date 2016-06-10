@@ -5,6 +5,7 @@ module.exports = mongoose.model('Profile', {
 	age : { type : String },
 	gender : {type : String },
 	twittername : { type: String },
-	interest : {type : Array },
-	finished_survey : {type : Boolean, default: false}
+	picture_url : { type: String },
+	twitterID : {type: String },
+	//interest : {type : Array },
 });

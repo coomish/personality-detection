@@ -15,5 +15,12 @@ Provides a Twitter survey application that allows users to submit their attribut
 
 1. Clone the repository
 2. Install the application: `npm install`
-3. Start the server: `nodemon server.js`
-4. View in browser at `http://localhost:8080`
+3. Create config/database.js with the following content:
+```
+module.exports = {
+	url: 'mongodb://localhost/profilesSurvey'
+}
+```
+You can always change the database.
+4. Start the server: `nodemon server.js`
+5. View in browser at `http://localhost:8080`

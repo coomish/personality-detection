@@ -18,4 +18,14 @@ angular.module('twitterSurvey')
 
       }
 		}
+	}])
+	.factory('Participents', ['$http',function($http) {
+		return {
+			get : function() {
+				return $http.get('/api/participents');
+			},
+			create : function(userData) {
+				return $http.post('/api/participents', userData);
+			}
+		}
 	}]);
