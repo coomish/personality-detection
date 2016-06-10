@@ -1,0 +1,27 @@
+{
+  "name": "messagebot",
+  "version": "1.0.0",
+  "description": "> npm install node-restclient@0.0.1",
+  "main": "messageBot.js",
+  "dependencies": {
+    "express": "^2.5.9",
+    "mongoose": "^4.4.19",
+    "node-restclient": "^0.0.1",
+    "prettyjson": "^1.1.3",
+    "twit": "^2.2.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coomish/MessageBot.git"
+  },
+  "author": "robinhirt",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/coomish/MessageBot/issues"
+  },
+  "homepage": "https://github.com/coomish/MessageBot#readme"
+}

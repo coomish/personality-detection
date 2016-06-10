@@ -1,0 +1,12 @@
+
+###	"tweet" <word>: tweets a word to timeline
+
+###	dm <screen_name> <word>: sends direct message "word" to screen_name
+
+###	search <word>: searches for words in tweets
+
+###	followers <screen_name> <int> returns <int> followers of <screen_name>
+
+###	profile <screen_name> returns profile of user
+
+### flist <screen_name> <int> returns newest <int> followers of User
