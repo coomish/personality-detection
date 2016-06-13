@@ -42,12 +42,12 @@ module.exports = function(app) {
 
 	// create participent and send back all participents after creation
 	app.post('/api/participents', function(req, res) {
-		console.log(req);
+		// console.log(req.body);
 		// create a profile, information comes from AJAX request from Angular
 		Participent.create({
 			screen_name : req.body.screen_name,
 			email: req.body.email,
-			twitterid: req.body.gender
+			twitterID: req.body.twitterdata.twitterID
 		}, function(err, participent) {
 			if (err)
 				res.send(err);
@@ -64,7 +64,8 @@ module.exports = function(app) {
 			age: req.body.age,
 			gender: req.body.gender,
 			picture_url: req.body.twitterdata.picture_url,
-			twittername: req.body.twitterdata.twittername
+			twittername: req.body.twitterdata.twittername,
+			twitterID: req.body.twitterdata.twitterID
 		}, function(err, profile) {
 			if (err)
 				res.send(err);
@@ -77,7 +78,7 @@ module.exports = function(app) {
 
 	// Define Crawler API that checks if Profile exists
 	app.get('/api/twittercheck/:screen_name', function(req, res) {
-		var json = { twittername : "", picture_url : "", exists : ""};
+		var json = { twittername : "", picture_url : "", exists : "", twitterID : ""};
 		// create a profile, information comes from AJAX request from Angular
 		url = 'https://twitter.com/' + req.params.screen_name;
 		request(url, function (error, response, html) {
@@ -92,7 +93,14 @@ module.exports = function(app) {
 					json.picture_url = data.attr('src');
 					//console.log(data.attr("src"));
 				})
+				$('div.ProfileNav').filter(function(){
+					var data = $(this);
+					json.twitterID = data.attr('data-user-id');
+					// console.log(json.twitterID);
+				})
+
 				json.exists = true;
+				console.log(json);
 				res.send(json);
 		  }
 			else {

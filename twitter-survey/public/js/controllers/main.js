@@ -65,7 +65,7 @@
                 // if successful creation, call get function to get all the new profiles
                 .success(function(data) {
                     $scope.loading = false;
-                    $scope.formData = {}; // clear the form so our user is ready to enter another
+                    // $scope.formData = {}; // clear the form so our user is ready to enter another
                     $scope.profiles = data; // assign our new list of profiles
                 });
             }

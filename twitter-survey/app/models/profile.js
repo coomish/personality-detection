@@ -7,5 +7,7 @@ module.exports = mongoose.model('Profile', {
 	twittername : { type: String },
 	picture_url : { type: String },
 	twitterID : {type: String },
+	time : { type : Date, default: Date.now }
+
 	//interest : {type : Array },
 });
